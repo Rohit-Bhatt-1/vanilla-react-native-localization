@@ -4,12 +4,18 @@ import RNRestart from 'react-native-restart';
 
 const Path = "./constants/AllPath";
 
+export const isRTL = async() => {
+    return (await "RTL".getLocalisedString());
+}
+
+export const myDirection = async() => {
+    return isRTL()?"right":"left";
+}
 
 export const setLanguage = async(lName:string) => {
     await AsyncStorage.setItem('language',lName);
-    const rtl = await "RTL".getLocalisedString();
-    if(rtl)
-        I18nManager.forceRTL(true);
+    if(await isRTL())
+            I18nManager.forceRTL(true);
     else 
         I18nManager.forceRTL(false);
     RNRestart.Restart();
@@ -46,7 +52,8 @@ declare global {
 
 String.prototype.getLocalisedString = async function(this:string):Promise<string>
 {
-    try {
+    try 
+    {
         const langObj = await getLanguage();
         let key: string = this;
         return langObj[key];
@@ -54,5 +61,4 @@ String.prototype.getLocalisedString = async function(this:string):Promise<string
         console.log("error: ",err);
         return "error while implementing getLanguage";
     }
-   
 } 
