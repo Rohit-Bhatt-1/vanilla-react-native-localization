@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from 'react';
 
-import {StyleSheet, Text, View, Button} from 'react-native';
-import {setLanguage, getLanguage} from './vanillaLocalization';
+import {StyleSheet, Text, View, Button, Alert} from 'react-native';
+import MyImage from './tags/MyImage';
+import MyText from './tags/MyText';
+import MyTextInput from './tags/MyTextInput';
+import {setLanguage, getLanguage, myDirection} from './vanillaLocalization';
 
 export default function App() {
   const [lang, setLang] = useState(getLanguage());
@@ -20,18 +23,37 @@ export default function App() {
     const t = await getLanguage();
     setLang(t);
   };
-  if (!check)
+  if (!check) {
     return (
       <View>
         <Text>Ruko zara, Sabr rakho</Text>
       </View>
     );
+  }
+
+  const aler = () =>
+    Alert.alert('Alert Title', 'My Alert Msg', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]);
+
   return (
     <View style={styles.out}>
-      <Text style={styles.txt}>check this out</Text>
+      <View>
+        <MyText>This is inside MyText!!</MyText>
+        <MyText onPress={aler}>{lang.text}</MyText>
+        <MyTextInput placeholder={lang.placeholder} style={styles.inp} />
+        <MyImage
+          source={require('./constants/Assets/RTL/finger-point.png')}
+          style={styles.fingerPoint}
+        />
+      </View>
       <View style={styles.in}>
-        {/* <Sasta /> */}
-        <Text>{lang.gyaan} jk</Text>
+        <MyText>{lang.gyaan} jk</MyText>
         <Button
           onPress={() => pressHandler('en')}
           title="English"
@@ -42,14 +64,16 @@ export default function App() {
           title="Japanese"
           color="#841342"
         />
-        <Text>{lang.description}</Text>
+        <MyText>{lang.description}</MyText>
       </View>
     </View>
   );
 }
 
+console.log('direction', myDirection());
 const styles = StyleSheet.create({
   out: {
+    margin: 20,
     flex: 1,
   },
   in: {
@@ -58,7 +82,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  txt: {
-    textAlign: 'left',
+  inp: {
+    borderTopWidth: 2,
+    borderLeftWidth: 1,
+  },
+  fingerPoint: {
+    width: 50,
+    height: 50,
   },
 });

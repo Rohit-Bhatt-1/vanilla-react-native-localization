@@ -4,20 +4,38 @@ import RNRestart from 'react-native-restart';
 
 const Path = "./constants/AllPath";
 
+let direction = {
+    start : "left",
+    end : "right"
+};
+
 export const isRTL = async() => {
     return (await "RTL".getLocalisedString());
 }
 
-export const myDirection = async() => {
-    return isRTL()?"right":"left";
+export const myDirection = () => {
+    if(I18nManager.isRTL)
+    {
+        return {start:"right",end:"left"}
+    }
+    return {start:"left",end:"right"}
 }
 
 export const setLanguage = async(lName:string) => {
+    
     await AsyncStorage.setItem('language',lName);
-    if(await isRTL())
+
+    if(await isRTL()){
             I18nManager.forceRTL(true);
-    else 
-        I18nManager.forceRTL(false);
+            direction.start = "right";
+            direction.end = "left;"
+        }
+    else{
+            I18nManager.forceRTL(false);
+            direction.start = "left";
+            direction.end = "right;"
+        }
+        
     RNRestart.Restart();
 }
 
