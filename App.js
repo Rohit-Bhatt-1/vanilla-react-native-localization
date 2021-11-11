@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import RNRestart from 'react-native-restart';
 
 import {StyleSheet, Text, View, Button, Alert} from 'react-native';
 import MyImage from './tags/MyImage';

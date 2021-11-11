@@ -14,7 +14,12 @@ export const getLanguage = async () => {
         let AllPath = require(Path);
         const v = await AsyncStorage.getItem('language');
         if(v===null){
-            return AllPath.default.Paths['en']
+           let userDefault = getUserDefaultLanguage()
+           if(AllPath.default.Paths[userDefault]!==undefined){
+               return AllPath.default.Paths[userDefault];
+           }else{
+               return AllPath.default.Paths['en'];
+           }
         }
         return AllPath.default.Paths[v];
     }catch(err){
