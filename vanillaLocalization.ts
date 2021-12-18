@@ -1,11 +1,44 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform, NativeModules } from 'react-native';
+import { Platform, NativeModules, I18nManager } from 'react-native';
+import { myRestart } from './Restart';
+// import RNRestart from 'react-native-restart';
 
 const Path = "./constants/AllPath";
 
+let direction = {
+    start: "left",
+    end: "right"
+};
+
+export const isRTL = async () => {
+    return (await "RTL".getLocalisedString());
+}
+
+export const myDirection = () => {
+    if (I18nManager.isRTL) {
+        return { start: "right", end: "left" }
+    }
+    return { start: "left", end: "right" }
+}
 
 export const setLanguage = async (lName: string) => {
+
     await AsyncStorage.setItem('language', lName);
+
+    if (await isRTL()) {
+        I18nManager.forceRTL(true);
+        direction.start = "right";
+        direction.end = "left;"
+    }
+    else {
+        I18nManager.forceRTL(false);
+        direction.start = "left";
+        direction.end = "right;"
+    }
+    // if(RNRestart)
+    // RNRestart.Restart();
+
+    myRestart(); // this method is different for expo and vanilla
 }
 
 export const getLanguage = async () => {
@@ -46,7 +79,6 @@ String.prototype.getLocalisedString = async function (this: string): Promise<str
         return langObj[key];
     } catch (err) {
         console.log("error: ", err);
-        return "error while implementing getLanguage()";
+        return "error while implementing getLanguage";
     }
-
 }

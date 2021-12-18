@@ -1,11 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import RNRestart from 'react-native-restart';
+import React, { useState, useEffect } from 'react';
 
-import {StyleSheet, Text, View, Button, Alert} from 'react-native';
+import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 import MyImage from './tags/MyImage';
 import MyText from './tags/MyText';
 import MyTextInput from './tags/MyTextInput';
-import {setLanguage, getLanguage, myDirection} from './vanillaLocalization';
+import { setLanguage, getLanguage, myDirection } from './vanillaLocalization';
 
 export default function App() {
   const [lang, setLang] = useState(getLanguage());
@@ -39,7 +38,7 @@ export default function App() {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'OK', onPress: () => console.log('OK Pressed')},
+      { text: 'OK', onPress: () => console.log('OK Pressed') },
     ]);
 
   return (
